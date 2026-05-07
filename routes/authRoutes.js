@@ -4,7 +4,6 @@
 require("dotenv").config();
 const express = require("express");
 const router = express.Router();
-const sqlite3 = require("sqlite3").verbose();
 const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
