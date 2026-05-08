@@ -74,6 +74,7 @@ router.post("/login", async (req, res) => {
             //Skapa JWT
             const payload = { username: username };
             const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, { expiresIn: '5h' });
+            user = await User.findOne({ username: username }, { password: 0 });
             const response = {
                 message: "User logged in!",
                 token: token
