@@ -57,9 +57,6 @@ router.post("/login", async (req, res) => {
             return res.status(400).json({ error: "Invalid input" });
         }
 
-        //Hasha lösenord
-        const hashedPassword = await bcrypt.hash(req.body.password, 10);
-
         //Finns användaren?
         const user = await User.findOne({ username });
         if (!user) {
@@ -74,24 +71,16 @@ router.post("/login", async (req, res) => {
             //Skapa JWT
             const payload = { username: username };
             const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, { expiresIn: '5h' });
-            user = await User.findOne({ username: username }, { password: 0 });
             const response = {
                 message: "User logged in!",
                 token: token
-            }
-
+            };
             res.status(200).json({ response });
         }
-
-        const passwordMatch = await bcrypt.compare(password, row.password);
-        if (!passwordMatch) {
-            res.status(401).json({ message: "Felaktigt användarnamn/lösenord" })
-        } else {
-            res.status(200).json({ message: "Inloggning lyckades" })
+            
+        } catch (error) {
+            res.status(500).json({ error: error.message });
         }
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
 });
 
 module.exports = router;
