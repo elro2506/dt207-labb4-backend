@@ -31,7 +31,7 @@ if(token === null) res.status(401).json({ message: "Inte authentiserad för denn
 jwt.verify(token, process.env.JWT_SECRET_KEY, (err, decoded) => {
     if(err) return res.status(403).json({ message: "Ogiltig JWT" });
 
-    req.username = username;
+    req.username = decoded;
     next();
 });
 
