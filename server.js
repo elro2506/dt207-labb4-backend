@@ -28,7 +28,7 @@ const token = authHeader && authHeader.split(' ')[1]; //Token
 
 if(token === null) res.status(401).json({ message: "Inte authentiserad för denna route - token saknas" });
 
-jwt.verify(token, process.env.JWT_SECRET_KEY, (err, username) => {
+jwt.verify(token, process.env.JWT_SECRET_KEY, (err, decoded) => {
     if(err) return res.status(403).json({ message: "Ogiltig JWT" });
 
     req.username = username;
